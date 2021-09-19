@@ -1,3 +1,4 @@
-{    "baseUrl": "https://front.serverest.dev/",
-    "watchForFileChanges" : false
+{
+  "baseUrl": "https://front.serverest.dev",
+  "pluginsFile": false
 }

@@ -1,20 +1,21 @@
 {
   "name": "test-e2e-serverest",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Teste e2e para a aplicação ServeREST",
   "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cy:open": "cypress open",
+    "test": "cypress run"
   },
-  "keywords": [],
+  "keywords": [
+    "Cypress.io",
+    "ServeREST",
+    "Testes e2e"
+  ],
   "author": "Misael Reis",
   "license": "ISC",
-  "dependencies": {
-    "faker": "5.5.3"
-  },
   "devDependencies": {
-    "cypress": "^8.4.0",
-    "cypress-file-upload": "^5.0.8"
+    "cypress": "^8.4.1",
+    "cypress-file-upload": "^5.0.8",
+    "faker": "5.5.3"
   }
 }

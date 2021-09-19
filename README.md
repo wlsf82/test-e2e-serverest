@@ -1,21 +1,30 @@
-# __Test-e2e-serverest Cypress.io__ ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Misaelreis/test-e2e-serverest/main)
-## __Apresentação__ 
-1. Teste e2e da aplicação [serverest](https://front.serverest.dev/)
-## __Pré-requisitos__
-1. Instalar o [Node](https://nodejs.org/pt-br/)
-1. Ter o Chrome instalado
+# test-e2e-serverest
 
-## __Instalando Dependências__
-1. Rodar o comando 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Misaelreis/test-e2e-serverest/main)
+
+Testes e2e para a aplicação [ServeREST](https://front.serverest.dev).
+
+## Pré-requisitos
+
+- [Node](https://nodejs.org)
+- Google Chrome
+
+## Instalação
+
+1. Para instalar as dependências de desenvolvimento, execute o comando:
+
 ```
 npm install
 ```
-2. Para abrir o Cypress Application use o comando
+
+2. Para abrir o Cypress em modo interativo, execute o comando:
+
 ```
-npm run cypress:open
+npm run cy:open
 ````
 
-3. Para rodar o Cypress Headless use o comando
+3. Para rodar os testes em modo _headless_, execute o comando:
+
 ```
-npm run cypress:run
+npm test
 ````

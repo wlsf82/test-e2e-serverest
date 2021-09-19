@@ -94,12 +94,16 @@ public/
 # DynamoDB Local files
 .dynamodb/
 
-#Visual Studio Code
+# Visual Studio Code
 .vscode
 
-#Cypress
+# Cypress
+cypress.env.json
 cypress/screenshots
 cypress/videos
+
+# Misc
+.DS_Store
 
 
 # End of https://www.gitignore.io/api/node

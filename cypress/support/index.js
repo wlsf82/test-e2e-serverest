@@ -1,2 +1,2 @@
-import './commands.js'
 import './apiCommands.js'
+import './guiCommands.js'
