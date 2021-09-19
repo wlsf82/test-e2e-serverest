@@ -60,7 +60,7 @@ Cypress.Commands.add('bypassUserLogin', () => {
   })
 })
 
-Cypress.Commands.add('createProduct', () => {
+Cypress.Commands.add('createProductViaApi', () => {
   cy.createUsersViaApi()
   cy.request({
     method: 'POST',

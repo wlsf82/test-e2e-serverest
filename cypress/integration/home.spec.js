@@ -124,14 +124,14 @@ describe('Home - User', () => {
   })
 
   it('Pesquisando produtos', () => {
-    cy.createProduct()
+    cy.createProductViaApi()
     cy.get('[data-testid=pesquisar]').type('Teste Zael Uai')
     cy.get('[data-testid=botaoPesquisar]').click()
     cy.get('.card').should('be.visible')
   })
 
   it('Pesquisando produto inexistente', () => {
-    cy.createProduct()
+    cy.createProductViaApi()
     cy.get('[data-testid=pesquisar]').type('kkkkkkkkkkkkkkk')
     cy.get('[data-testid=botaoPesquisar]').click()
     cy.get('.espacamento > .col-12 > .row')

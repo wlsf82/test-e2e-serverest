@@ -30,7 +30,7 @@ describe('Acessar lista de compra', () => {
 
 describe('Acessar lista de compra com produto', () => {
   beforeEach(() => {
-    cy.createProduct()
+    cy.createProductViaApi()
     cy.bypassUserLogin()
     cy.visit('home')
     digitar(homePage.inputPesquisar, 'Teste Zael Uai')
