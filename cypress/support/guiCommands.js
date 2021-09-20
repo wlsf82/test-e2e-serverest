@@ -40,3 +40,12 @@ Cypress.Commands.add('createAdminUser', (name, email, password) => {
   cy.get(createUser.imputSenha).type(password)
   cy.get(createUser.btnCadastrarAdmin).click()
 })
+
+Cypress.Commands.add('fillProductFormAndSubmit', product => {
+  cy.get('[data-testid=nome]').type(product.nome)
+  cy.get('[data-testid=preco]').type(product.preco)
+  cy.get('[data-testid=descricao]').type(product.descricao)
+  cy.get('[data-testid=quantidade]').type(product.quantidade)
+  cy.get('[data-testid=imagem]').as('fileInput').attachFile('cy.png')
+  cy.get('[data-testid=cadastarProdutos]').click()
+})
