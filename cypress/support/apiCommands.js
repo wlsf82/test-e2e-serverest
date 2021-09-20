@@ -6,8 +6,8 @@ Cypress.Commands.add('createUsersViaApi', () => {
     url: 'https://serverest.dev/usuarios',
     body: {
       nome: 'Misael Adm',
-      email: 'misael@gmail.com.br',
-      password: 'teste',
+      email: Cypress.env('user'),
+      password: Cypress.env('password'),
       administrador: 'true'
     }
   })
@@ -20,7 +20,7 @@ Cypress.Commands.add('createUsersViaApi', () => {
     body: {
       nome: 'Misael Usuario',
       email: 'misael@gmail.com',
-      password: 'teste',
+      password: Cypress.env('password'),
       administrador: 'false'
     }
   })
@@ -33,12 +33,12 @@ Cypress.Commands.add('bypassAdminLogin', () => {
     headers:{ accept: '/' },
     url: 'https://serverest.dev/login',
     body: {
-      email: 'misael@gmail.com.br',
-      password: 'teste'
+      email: Cypress.env('user'),
+      password: Cypress.env('password')
     }
   }).then(({body}) => {
     window.localStorage.setItem('serverest/userNome', 'Misael Adm')
-    window.localStorage.setItem('serverest/userEmail','misael@gmail.com.br')
+    window.localStorage.setItem('serverest/userEmail',Cypress.env('user'))
     window.localStorage.setItem('serverest/userToken', body.authorization)
   })
 })
@@ -51,7 +51,7 @@ Cypress.Commands.add('bypassUserLogin', () => {
     url: 'https://serverest.dev/login',
     body: {
       email: 'misael@gmail.com',
-      password: 'teste'
+      password: Cypress.env('password')
     }
   }).then(({body}) => {
     window.localStorage.setItem('serverest/userNome', 'Misael Usuario')
@@ -67,8 +67,8 @@ Cypress.Commands.add('createProductViaApi', () => {
     headers:{ accept: '/' },
     url: 'https://serverest.dev/login',
     body: {
-      email: 'misael@gmail.com.br',
-      password: 'teste'
+      email: Cypress.env('user'),
+      password: Cypress.env('password')
     }
   }).then(({body}) => {
     cy.request({
