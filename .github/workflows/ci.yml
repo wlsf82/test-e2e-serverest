@@ -5,28 +5,21 @@ name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build:
-
+  tests:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-
+    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      env:
-        CYPRESS_USER: ${{ secrets.CYPRESS_USER }}
-        CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm install
-    - run: npm test
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run end-to-end tests 🧪
+        uses: cypress-io/github-action@v2
+        env:
+          CYPRESS_USER: ${{ secrets.CYPRESS_USER }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+        with:
+          command: npm test
