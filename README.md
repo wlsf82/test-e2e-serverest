@@ -1,6 +1,6 @@
 # test-e2e-serverest
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Misaelreis/test-e2e-serverest/main)
+[![ci](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml)
 
 Testes e2e para a aplicação [ServeREST](https://front.serverest.dev).
 
