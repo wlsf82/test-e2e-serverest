@@ -1,9 +1,13 @@
+const apiUrl = 'https://serverest.dev'
+const usersUrl = `${apiUrl}/usuarios`
+const loginUrl = `${apiUrl}/login`
+
 Cypress.Commands.add('createUsersViaApi', () => {
   cy.request({
     method: 'POST',
     failOnStatusCode: false,
-    headers:{ accept: '/' },
-    url: 'https://serverest.dev/usuarios',
+    headers: { accept: '/' },
+    url: usersUrl,
     body: {
       nome: 'Misael Adm',
       email: Cypress.env('user'),
@@ -16,7 +20,7 @@ Cypress.Commands.add('createUsersViaApi', () => {
     method: 'POST',
     failOnStatusCode: false,
     headers:{ accept: '/' },
-    url: 'https://serverest.dev/usuarios',
+    url: usersUrl,
     body: {
       nome: 'Misael Usuario',
       email: 'misael@gmail.com',
@@ -30,15 +34,15 @@ Cypress.Commands.add('bypassAdminLogin', () => {
   cy.createUsersViaApi()
   cy.request({
     method: 'POST',
-    headers:{ accept: '/' },
-    url: 'https://serverest.dev/login',
+    headers: { accept: '/' },
+    url: loginUrl,
     body: {
       email: Cypress.env('user'),
       password: Cypress.env('password')
     }
   }).then(({body}) => {
     window.localStorage.setItem('serverest/userNome', 'Misael Adm')
-    window.localStorage.setItem('serverest/userEmail',Cypress.env('user'))
+    window.localStorage.setItem('serverest/userEmail', Cypress.env('user'))
     window.localStorage.setItem('serverest/userToken', body.authorization)
   })
 })
@@ -48,14 +52,14 @@ Cypress.Commands.add('bypassUserLogin', () => {
   cy.request({
     method: 'POST',
     headers:{ accept : '/' },
-    url: 'https://serverest.dev/login',
+    url: loginUrl,
     body: {
       email: 'misael@gmail.com',
       password: Cypress.env('password')
     }
   }).then(({body}) => {
     window.localStorage.setItem('serverest/userNome', 'Misael Usuario')
-    window.localStorage.setItem('serverest/userEmail','misael@gmail.com')
+    window.localStorage.setItem('serverest/userEmail', 'misael@gmail.com')
     window.localStorage.setItem('serverest/userToken', body.authorization)
   })
 })
@@ -65,7 +69,7 @@ Cypress.Commands.add('createProductViaApi', () => {
   cy.request({
     method: 'POST',
     headers:{ accept: '/' },
-    url: 'https://serverest.dev/login',
+    url: loginUrl,
     body: {
       email: Cypress.env('user'),
       password: Cypress.env('password')
@@ -75,7 +79,7 @@ Cypress.Commands.add('createProductViaApi', () => {
       failOnStatusCode: false,
       method: 'POST',
       headers: { Authorization: body.authorization },
-      url: 'https://serverest.dev/produtos',
+      url: `${apiUrl}/produtos`,
       body: {
         nome: 'Teste Zael Uai',
         preco: 470,
