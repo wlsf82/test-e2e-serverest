@@ -91,11 +91,6 @@ describe('Homepage - Admin', () => {
     cy.get(menuHomeSelector).click()
     cy.url().should('be.equal', `${baseUrl}/admin/home`)
   })
-
-  it('Faz logout com sucesso', () => {
-    cy.get('[data-testid=logout]').click()
-    cy.url().should('be.equal', `${baseUrl}/login`)
-  })
 })
 
 describe('Homepage - User', () => {

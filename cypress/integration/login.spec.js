@@ -1,69 +1,44 @@
 /// <reference types = "Cypress" />
 
-import loginPage from '../page/login.page'
+describe('Login', () => {
+  const baseUrl = Cypress.config('baseUrl')
+  const alertSelector = '.alert'
 
-const {
-    visit,
-    validaTexto,
-    validaUrl,
-    clicar,
-    digitar
-} = require('../actions/principal.action')
-
-describe('Testes de Login', () => {
-  const login = {
-    user: 'misael@gmail.com.br',
-    password: 'teste'
-  }
-
-  beforeEach(() => visit())
-    
-  it('valida página de login', () => {
-    validaUrl('https://front.serverest.dev/login')
+  beforeEach(() => {
+    cy.visit('/')
+    cy.url().should('be.equal', `${baseUrl}/login`)
   })
 
-  it('valida login sucesso', () => {
-    cy.login(login.user, login.password)
-    validaUrl('https://front.serverest.dev/admin/home')
+  it('Login com sucesso leva à página home', () => {
+    cy.login(Cypress.env('user'), Cypress.env('password'))
+    cy.url().should('be.equal', `${baseUrl}/admin/home`)
   })
 
-  it('valida email incorreto', () => {
-    cy.login('misael@qc.com.br', login.password)
-    validaTexto(loginPage.textAlert, 'Email e/ou senha inválidos')
+  it('Alerta é exibido ao tentar fazer login com email incorreto', () => {
+    cy.login('misael@qc.com.br', Cypress.env('password'))
+    cy.contains(alertSelector, 'Email e/ou senha inválidos').should('be.visible')
   })
 
-  it('valida senha incorreta', () => {
-    cy.login(login.user, 'testing')
-    validaTexto(loginPage.textAlert, 'Email e/ou senha inválidos')
+  it('Alerta é exibido ao tentar fazer login com senha incorreta', () => {
+    cy.login(Cypress.env('user'), 'testing')
+    cy.contains(alertSelector, 'Email e/ou senha inválidos').should('be.visible')
   })
 
-  it('valida logout sucesso', () => {
-    cy.login(login.user, login.password)
-    validaUrl('https://front.serverest.dev/admin/home')
-    clicar(loginPage.btnSair)
-    validaUrl('https://front.serverest.dev/login')
+  it('Logout com sucesso leva à página de login', () => {
+    cy.login(Cypress.env('user'), Cypress.env('password'))
+    cy.url().should('be.equal', `${baseUrl}/admin/home`)
+    cy.get('[data-testid=logout]').click()
+    cy.url().should('be.equal', `${baseUrl}/login`)
   })
 
-  it('valida login sem senha', () => {
-    digitar(loginPage.imputEmail,login.user)
-    clicar(loginPage.btnEntrar)
-    validaTexto(loginPage.textAlert, 'password não pode ficar em branco')
+  it('Alerta é exibido ao tentar fazer login com email invalido', () => {
+    cy.login('m@m', Cypress.env('password'))
+    cy.contains(alertSelector, 'email deve ser um email válido').should('be.visible')
   })
 
-  it('valida email invalido', () => {
-    cy.login('m@m', login.password)
-    validaTexto(loginPage.textAlert, 'email deve ser um email válido')
-  })
-
-  it('valida login sem email', () => {
-    digitar(loginPage.imputSenha, 'teste')
-    clicar(loginPage.btnEntrar)
-    validaTexto(loginPage.textAlert, 'email não pode ficar em branco')
-  })
-
-  it('valida login sem email e senha', () => {
-    clicar(loginPage.btnEntrar)
-    validaTexto(loginPage.textAlertEmail, 'email não pode ficar em branco')
-    validaTexto(loginPage.textAlertPassword, 'password não pode ficar em branco')
+  it('Alerta é exibido ao tentar fazer login login sem digitar email e senha', () => {
+    cy.get('[data-testid=entrar]').click()
+    cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')
+    cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')
   })
 })
