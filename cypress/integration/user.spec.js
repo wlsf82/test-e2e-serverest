@@ -2,86 +2,48 @@
 
 const faker = require('faker')
 
-import createUser from '../page/user.page'
-import userPage from '../page/user.page'
-import login from '../page/login.page'
-
-const {
-  visit,
-  validaTexto,
-  validaUrl,
-  clicar,
-  validaElementoVisivel
-} = require('../actions/principal.action')
-
 describe('Cadastro de usuário', () => {
-  const user = {
-    name: faker.name.firstName(),
-    email : faker.internet.email(),
-    password: 'teste'
-  }
+  const baseUrl = Cypress.config('baseUrl')
+  const alertSelector = '.alert'
+  let user
 
   beforeEach(() => {
-    visit()
-    clicar(userPage.btnCadastrar)
-  })
+    user = {
+      name: faker.name.firstName(),
+      email : faker.internet.email(),
+      password: Cypress.env('password')
+    }
 
-  it('valida página de cadastro', () => {
-    validaUrl('https://front.serverest.dev/cadastrarusuarios')
+    cy.visit('/cadastrarusuarios')
   })
 
   it('valida cadastro usuário adm sucesso', () => {
-    user.email = faker.internet.email()
+    user.admin = true
 
-    cy.createUserAdm(user.name, user.email, user.password)
-    validaElementoVisivel(login.textAlert)
-    validaTexto(userPage.textAlertLink, 'Cadastro realizado com sucesso')
-    validaUrl('https://front.serverest.dev/admin/home')
+    cy.createUser(user)
+    cy.contains(alertSelector, 'Cadastro realizado com sucesso').should('be.visible')
+    cy.url().should('be.equal', `${baseUrl}/admin/home`)
   })
 
   it('valida cadastro usuário sucesso', () => {
-    user.email = faker.internet.email()
+    user.admin = false
 
-    cy.createUser(user.name, user.email, user.password)
-    validaElementoVisivel(login.textAlert)
-    validaTexto(userPage.textAlertLink, 'Cadastro realizado com sucesso')
-    validaUrl('https://front.serverest.dev/home')
-  })
-
-  it('valida cadastro sem senha', () => {
-    cy.get(createUser.imputNome).type(user.name)
-    cy.get(createUser.imputEmail).type(user.email)
-    cy.get(createUser.btnCadastrar).click()
-    validaTexto(login.textAlert, 'password não pode ficar em branco')
+    cy.createUser(user)
+    cy.contains(alertSelector, 'Cadastro realizado com sucesso').should('be.visible')
+    cy.url().should('be.equal', `${baseUrl}/home`)
   })
 
   it('valida email invalido', () => {
-    cy.get(createUser.imputNome).type('Maria')
-    cy.get(createUser.imputEmail).type('m@m')
-    cy.get(createUser.imputSenha).type('teste')
-    cy.get(createUser.btnCadastrar).click()
-    validaTexto(login.textAlert, 'email deve ser um email válido')
-  })
+    user.email = 'm@m'
 
-  it('valida cadastro sem email', () => {
-    cy.get(createUser.imputNome).type('Maria')
-    cy.get(createUser.imputSenha).type('teste')
-    cy.get(createUser.btnCadastrar).click()
-    validaTexto(login.textAlert, 'email não pode ficar em branco')
-  })
-
-
-  it('valida sem nome', () => {
-    cy.get(createUser.imputEmail).type('misael@email.com')
-    cy.get(createUser.imputSenha).type('teste')
-    cy.get(createUser.btnCadastrar).click()
-    validaTexto(login.textAlert, 'nome não pode ficar em branco')
+    cy.createUser(user)
+    cy.contains(alertSelector, 'email deve ser um email válido').should('be.visible')
   })
 
   it('valida cadastro sem email, senha e nome', () => {
-    cy.get(createUser.btnCadastrar).click()
-    validaTexto(login.textAlertEmail, 'email não pode ficar em branco')
-    validaTexto(login.textAlertPassword, 'password não pode ficar em branco')
-    validaTexto(login.textAlertnome, 'nome não pode ficar em branco')
+    cy.get('[data-testid=cadastrar]').click()
+    cy.contains(alertSelector, 'nome não pode ficar em branco').should('be.visible')
+    cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')
+    cy.contains(alertSelector, 'password não pode ficar em branco').should('be.visible')
   })
 })
