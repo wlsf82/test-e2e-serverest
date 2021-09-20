@@ -28,3 +28,7 @@ npm run cy:open
 ```
 npm test
 ````
+
+___
+
+Refatorado com ❤️ por [Walmyr](https://walmyr.dev).
