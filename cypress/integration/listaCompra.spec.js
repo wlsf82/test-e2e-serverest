@@ -1,96 +1,85 @@
 /// <reference types = "Cypress" />
 
-import listPage from '../page/list.page'
-import homePage from '../page/home.page'
-
-const {
-  validaTexto,
-  validaUrl,
-  clicar,
-  digitar
-} = require('../actions/principal.action')
+const baseUrl = Cypress.config('baseUrl')
+const homePageUrl = `${baseUrl}/home`
+const myProductsListUrl = `${baseUrl}/minhaListaDeProdutos`
+const cartEmptyMessageSelector = '[data-testid=shopping-cart-empty-message]'
+const yourCartIsEmptyText = 'Seu carrinho está vazio'
+const headingOneSelector = 'h1'
 
 describe('Acessar lista de compra', () => {
   beforeEach(() => {
     cy.bypassUserLogin()
-    cy.visit('minhaListaDeProdutos')
+    cy.visit('/minhaListaDeProdutos')
   })
 
-  it('Valida lista de compra', () => {
-    validaTexto(listPage.textListaCompra, 'Lista de Compras')
-    validaTexto(listPage.textCarrinhoVazio, 'Seu carrinho está vazio')
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
+  it('URL é "/minhaListaDeProdutos" e h1 e parágrafo estão corretos', () => {
+    cy.contains(headingOneSelector, 'Lista de Compras').should('be.visible')
+    cy.contains(cartEmptyMessageSelector, yourCartIsEmptyText).should('be.visible')
+    cy.url().should('be.equal', myProductsListUrl)
   })
 
-  it('Voltar para a home', () => {
-    clicar(listPage.btnPaginaInicial)
-    validaUrl('https://front.serverest.dev/home')
+  it('Clique no botão "Página inicial" leva à página home', () => {
+    cy.get('[data-testid=paginaInicial]').click()
+    cy.url().should('be.equal', homePageUrl)
   })
 })
 
-describe('Acessar lista de compra com produto', () => {
+describe('Lista de compras com produto', () => {
+  const product = 'Teste Zael Uai'
+
   beforeEach(() => {
     cy.createProductViaApi()
     cy.bypassUserLogin()
-    cy.visit('home')
-    digitar(homePage.inputPesquisar, 'Teste Zael Uai')
-    clicar(homePage.btnPesquisar)
+    cy.visit('/home')
+    cy.get('[data-testid=pesquisar]').type(product)
+    cy.get('[data-testid=botaoPesquisar]').click()
   })
 
-  it('Valida detalhes produto - voltar', () => {
-    clicar(homePage.btnDetalhe)
-    validaTexto(listPage.textListaCompra, 'Detalhes do produto')
-    validaTexto(listPage.textNomeProduto, 'Teste Zael Uai')
-    clicar(listPage.btnVoltar)
-    validaUrl('https://front.serverest.dev/home')
-  })
+  context('Detalhes do produto', () => {
+    beforeEach(() => {
+      cy.get('.card-link').click()
+      cy.contains(headingOneSelector, 'Detalhes do produto').should('be.visible')
+      cy.contains('[data-testid=product-detail-name]', product).should('be.visible')
+    })
 
-  it('Valida detalhes produto - adicionar lista', () => {
-    clicar(homePage.btnDetalhe)
-    validaTexto(listPage.textListaCompra, 'Detalhes do produto')
-    validaTexto(listPage.textNomeProduto, 'Teste Zael Uai')
-    clicar(listPage.btnAdicionarLista)
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
-    clicar(listPage.btnLimparLista)
-    validaTexto(listPage.textCarrinhoVazio, 'Seu carrinho está vazio')
-  })
+    it('Clique no botão "Voltar" leva à página home', () => {
+      cy.get('[data-testid=voltarHome]').click()
+      cy.url().should('be.equal', homePageUrl)
+    })
 
-  it('Valida detalhes produto - adicionar lista e carrinho', () => {
-    clicar(homePage.btnDetalhe)
-    validaTexto(listPage.textListaCompra, 'Detalhes do produto')
-    validaTexto(listPage.textNomeProduto, 'Teste Zael Uai')
-    clicar(listPage.btnAdicionarLista)
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
-    clicar(listPage.btnAdicionarCarrinho)
-    validaUrl('https://front.serverest.dev/carrinho')
-    validaTexto(listPage.textListaCompra, 'Em construção aguarde')
-  })
+    context('Produto adicionado na lista', () => {
+      beforeEach(() => {
+        cy.get('[data-testid=adicionarNaLista]').click()
+        cy.url().should('be.equal', myProductsListUrl)
+      })
 
-  it('Valida detalhes produto - Adicionar produtos', () => {
-    clicar(homePage.btnDetalhe)
-    validaTexto(listPage.textListaCompra, 'Detalhes do produto')
-    validaTexto(listPage.textNomeProduto, 'Teste Zael Uai')
-    clicar(listPage.btnAdicionarLista)
-    clicar(listPage.btnAdicionarMais)
-    validaTexto(listPage.textQtdItem, '2')
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
-  })
+      it('Clique no botão "Limpar Lista" exibe carrinho vazio', () => {
+        cy.get('[data-testid=limparLista]').click()
+        cy.contains(cartEmptyMessageSelector, yourCartIsEmptyText).should('be.visible')
+      })
 
+      it('Clique no botão "Adicionar no carrinho" leva à página em construção "/carrinho"', () => {
+        cy.get('[data-testid="adicionar carrinho"]').click()
+        cy.url().should('be.equal', `${baseUrl}/carrinho`)
+        cy.contains(headingOneSelector, 'Em construção aguarde').should('be.visible')
+      })
 
-  it('Valida detalhes produto - Remover produtos', () => {
-    clicar(homePage.btnDetalhe)
-    validaTexto(listPage.textListaCompra, 'Detalhes do produto')
-    validaTexto(listPage.textNomeProduto, 'Teste Zael Uai')
-    clicar(listPage.btnAdicionarLista)
-    clicar(listPage.btnAdicionarMais)
-    validaTexto(listPage.textQtdItem, '2')
-    clicar(listPage.btnRemover)
-    validaTexto(listPage.textQtdItem, '1')
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
-  })
+      context('Seleciona mais um do mesmo produto', () => {
+        const counterSelector = '.row > :nth-child(3)'
 
-  it('Valida detalhes produto - Adicionar Lista', () => {
-    clicar(listPage.btnAdicionarLista)
-    validaUrl('https://front.serverest.dev/minhaListaDeProdutos')
+        beforeEach(() => cy.get('[data-testid=product-increase-quantity]').click())
+
+        it('Clique no botão + incrementa o número de produtos', () => {
+          cy.get(counterSelector).should('have.text', '2')
+        })
+
+        it('Clique no botão - decrementa o número de protudos', () => {
+          cy.get('[data-testid=product-decrease-quantity]').click()
+          cy.get(counterSelector).should('have.text', '1')
+          cy.url().should('be.equal', myProductsListUrl)
+        })
+      })
+    })
   })
 })
