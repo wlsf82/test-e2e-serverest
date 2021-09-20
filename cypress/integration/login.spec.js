@@ -7,14 +7,14 @@ describe('Login', () => {
   beforeEach(() => cy.visit('/'))
 
   it('Login com sucesso leva à página home e logout leva à página de login', () => {
-    cy.login(Cypress.env('USER'), Cypress.env('PASSOWRD'))
+    cy.login(Cypress.env('USER'), Cypress.env('PASSWORD'))
     cy.url().should('be.equal', `${baseUrl}/admin/home`)
     cy.get('[data-testid=logout]').click()
     cy.url().should('be.equal', `${baseUrl}/login`)
   })
 
   it('Erro é exibido ao tentar fazer login com email incorreto', () => {
-    cy.login('misael@qc.com.br', Cypress.env('PASSOWRD'))
+    cy.login('misael@qc.com.br', Cypress.env('PASSWORD'))
     cy.contains(alertSelector, 'Email e/ou senha inválidos').should('be.visible')
   })
 
@@ -24,7 +24,7 @@ describe('Login', () => {
   })
 
   it('Erro é exibido ao tentar fazer login com email invalido', () => {
-    cy.login('m@m', Cypress.env('PASSOWRD'))
+    cy.login('m@m', Cypress.env('PASSWORD'))
     cy.contains(alertSelector, 'email deve ser um email válido').should('be.visible')
   })
 

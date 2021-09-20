@@ -11,7 +11,7 @@ describe('Cadastro de usuário', () => {
     user = {
       name: faker.name.firstName(),
       email : faker.internet.email(),
-      password: Cypress.env('PASSOWRD')
+      password: Cypress.env('PASSWORD')
     }
 
     cy.visit('/cadastrarusuarios')
