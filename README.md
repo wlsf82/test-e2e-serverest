@@ -1,6 +1,6 @@
 # test-e2e-serverest
 
-[![ci](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml)
+[![ci](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml/badge.svg)](https://github.com/wlsf82/test-e2e-serverest/actions/workflows/ci.yml)
 
 Testes e2e para a aplicação [ServeREST](https://front.serverest.dev).
 
