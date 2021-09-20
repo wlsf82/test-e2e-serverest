@@ -1,17 +1,13 @@
 /// <reference types = "Cypress" />
 
-import product from '../page/product.page'
-
-const { validaTexto, validaUrl } = require('../actions/principal.action')
-
 describe('Relatório', () => {
   beforeEach(() => {
     cy.bypassAdminLogin()
-    cy.visit('admin/relatorios')
+    cy.visit('/admin/relatorios')
   })
 
-  it('valida página de cadastro', () => {
-    validaUrl('https://front.serverest.dev/admin/relatorios')
-    validaTexto(product.textProduto, 'Em construção aguarde')
+  it('Exibe página em construção', () => {
+    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/admin/relatorios`)
+    cy.contains('h1', 'Em construção aguarde').should('be.visible')
   })
 })
