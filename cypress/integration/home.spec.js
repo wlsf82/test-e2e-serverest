@@ -123,18 +123,20 @@ describe('Home - User', () => {
       .should('be.equal', `${baseUrl}/minhaListaDeProdutos`)
   })
 
-  it('Pesquisando produtos', () => {
-    cy.createProductViaApi()
-    cy.get('[data-testid=pesquisar]').type('Teste Zael Uai')
-    cy.get('[data-testid=botaoPesquisar]').click()
-    cy.get('.card').should('be.visible')
-  })
+  context('Produtos', () => {
+    beforeEach(() => cy.createProductViaApi())
 
-  it('Pesquisando produto inexistente', () => {
-    cy.createProductViaApi()
-    cy.get('[data-testid=pesquisar]').type('kkkkkkkkkkkkkkk')
-    cy.get('[data-testid=botaoPesquisar]').click()
-    cy.get('.espacamento > .col-12 > .row')
-      .should('have.text', 'Nenhum produto foi encontrado')
+    it('Pesquisando produtos', () => {
+      cy.get('[data-testid=pesquisar]').type('Teste Zael Uai')
+      cy.get('[data-testid=botaoPesquisar]').click()
+      cy.get('.card').should('be.visible')
+    })
+
+    it('Pesquisando produto inexistente', () => {
+      cy.get('[data-testid=pesquisar]').type('kkkkkkkkkkkkkkk')
+      cy.get('[data-testid=botaoPesquisar]').click()
+      cy.get('.espacamento > .col-12 > .row')
+        .should('have.text', 'Nenhum produto foi encontrado')
+    })
   })
 })
