@@ -1,4 +1,5 @@
 {
   "baseUrl": "https://front.serverest.dev",
+  "defaultCommandTimeout": 10000,
   "pluginsFile": false
 }
