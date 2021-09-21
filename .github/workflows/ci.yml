@@ -7,16 +7,29 @@ on:
   pull_request:
 
 jobs:
-  tests:
+  tests-chrome:
     runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run end-to-end tests 🧪
+      - name: Run end-to-end tests 🧪 using Chrome
         uses: cypress-io/github-action@v2
         env:
           CYPRESS_USER: ${{ secrets.CYPRESS_USER }}
           CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
         with:
           command: npm test
+  tests-firefox:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node12.18.3-chrome87-ff82
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run end-to-end tests 🧪 using Firefox
+        uses: cypress-io/github-action@v2
+        env:
+          CYPRESS_USER: ${{ secrets.CYPRESS_USER }}
+          CYPRESS_PASSWORD: ${{ secrets.CYPRESS_PASSWORD }}
+        with:
+          command: npm run test:firefox

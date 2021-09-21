@@ -4,7 +4,8 @@
   "description": "Teste e2e para a aplicação ServeREST",
   "scripts": {
     "cy:open": "cypress open",
-    "test": "cypress run"
+    "test": "cypress run",
+    "test:firefox": "cypress run --browser firefox"
   },
   "keywords": [
     "Cypress.io",
