@@ -11,19 +11,21 @@ Testes e2e para a aplicação [ServeREST](https://front.serverest.dev).
 
 ## Instalação
 
-1. Para instalar as dependências de desenvolvimento, execute o comando:
+Para instalar as dependências de desenvolvimento, execute o comando:
 
 ```
 npm install
 ```
 
-2. Para abrir o Cypress em modo interativo, execute o comando:
+## Testes
+
+Para abrir o Cypress em modo interativo, execute o comando:
 
 ```
 npm run cy:open
 ````
 
-3. Para rodar os testes em modo _headless_, execute o comando:
+Para rodar os testes em modo _headless_, execute o comando:
 
 ```
 npm test
