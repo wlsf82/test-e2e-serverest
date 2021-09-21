@@ -17,8 +17,7 @@ describe('Cadastro de produtos', () => {
   beforeEach(() => {
     cy.bypassAdminLogin()
     cy.visit('/admin/cadastrarprodutos')
-    cy.url().should('be.equal', `${baseUrl}/admin/cadastrarprodutos`)
-    cy.get('h1').should('have.text', 'Cadastro de Produtos')
+    cy.contains('h1', 'Cadastro de Produtos').should('be.visible')
   })
 
   it('Criação de produto leva à listagem de produtos com o produto recém criado', () => {

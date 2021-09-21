@@ -31,6 +31,6 @@ describe('Login', () => {
   it('Erro é exibido ao tentar fazer login login sem digitar email e senha', () => {
     cy.get('[data-testid=entrar]').click()
     cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')
-    cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')
+    cy.contains(alertSelector, 'password não pode ficar em branco').should('be.visible')
   })
 })

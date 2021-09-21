@@ -1,10 +1,11 @@
 /// <reference types = "Cypress" />
 
-const faker = require('faker')
-
 describe('Cadastro de usuário', () => {
+  const faker = require('faker')
+
   const baseUrl = Cypress.config('baseUrl')
   const alertSelector = '.alert'
+
   let user
 
   beforeEach(() => {
@@ -17,7 +18,7 @@ describe('Cadastro de usuário', () => {
     cy.visit('/cadastrarusuarios')
   })
 
-  it('valida cadastro usuário adm sucesso', () => {
+  it('Cadastra usuário admin com sucesso', () => {
     user.admin = true
 
     cy.createUser(user)
@@ -25,7 +26,7 @@ describe('Cadastro de usuário', () => {
     cy.url().should('be.equal', `${baseUrl}/admin/home`)
   })
 
-  it('valida cadastro usuário sucesso', () => {
+  it('Cadastra usuário não-admin sucesso', () => {
     user.admin = false
 
     cy.createUser(user)
@@ -33,14 +34,14 @@ describe('Cadastro de usuário', () => {
     cy.url().should('be.equal', `${baseUrl}/home`)
   })
 
-  it('valida email invalido', () => {
+  it('Erro é exibido ao tentar cadastrar usuário com email inválido', () => {
     user.email = 'm@m'
 
     cy.createUser(user)
     cy.contains(alertSelector, 'email deve ser um email válido').should('be.visible')
   })
 
-  it('valida cadastro sem email, senha e nome', () => {
+  it('Erros são exibidos ao tentar cadastrar usuário sem preencher os campos obrigatórios', () => {
     cy.get('[data-testid=cadastrar]').click()
     cy.contains(alertSelector, 'nome não pode ficar em branco').should('be.visible')
     cy.contains(alertSelector, 'email não pode ficar em branco').should('be.visible')

@@ -7,7 +7,6 @@ describe('Relatório', () => {
   })
 
   it('Exibe página em construção', () => {
-    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/admin/relatorios`)
     cy.contains('h1', 'Em construção aguarde').should('be.visible')
   })
 })
